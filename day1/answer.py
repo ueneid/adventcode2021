@@ -20,6 +20,8 @@ def get_reports_trend(reports: list[int]) -> list[Trend]:
                 trends.append(Trend.DEC)
             else:
                 trends.append(Trend.NA)
+        else:
+            trends.append(Trend.NA)
         prev = r
     return trends
 
