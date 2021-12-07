@@ -3,7 +3,7 @@ import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append(str(current_dir) + '/../')
 
-from util.util import read_from_stdin_as_array, echo
+from util.util import read_lines_from_stdin, echo
 
 
 def answer1(commands: list[tuple[str, int]]) -> int:
@@ -32,6 +32,6 @@ def answer2(commands: list[tuple[str, int]]) -> int:
 
 
 if __name__ == "__main__":
-    commands = [(direction, int(v)) for direction, v in [line.split(" ") for line in read_from_stdin_as_array(echo)]]
+    commands = read_lines_from_stdin(lambda lines: [(direction, int(v)) for direction, v in [line.split(" ") for line in lines]])
     print(answer1(commands))
     print(answer2(commands))

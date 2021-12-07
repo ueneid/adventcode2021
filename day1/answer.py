@@ -3,7 +3,7 @@ import sys
 import pathlib
 current_dir = pathlib.Path(__file__).resolve().parent
 sys.path.append(str(current_dir) + '/../')
-from util.util import read_from_stdin_as_array
+from util.util import read_lines_from_stdin
 
 
 class Trend(Enum):
@@ -44,6 +44,6 @@ def answer2(reports: list[int], window_size: int = 3) -> int:
 
 
 if __name__ == "__main__":
-    reports = read_from_stdin_as_array(int)
+    reports = read_lines_from_stdin(lambda lines: [int(line) for line in lines])
     print(answer1(reports))
     print(answer2(reports))
