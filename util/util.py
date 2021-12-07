@@ -8,5 +8,6 @@ def echo(arg: T) -> T:
     return arg
 
 
-def read_from_stdin_as_array(cast_func: Callable[[str], T]) -> list[T]:
-    return [cast_func(line.strip()) for line in sys.stdin]
+def read_lines_from_stdin(callback: Callable[[list[str]], T] = echo) -> T:
+    inputs = [line.strip() for line in sys.stdin]
+    return callback(inputs)
