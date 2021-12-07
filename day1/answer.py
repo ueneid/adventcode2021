@@ -1,5 +1,9 @@
-import sys
 from enum import Enum
+import sys
+import pathlib
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append(str(current_dir) + '/../')
+from util.util import read_from_stdin_as_array
 
 
 class Trend(Enum):
@@ -40,8 +44,6 @@ def answer2(reports: list[int], window_size: int = 3) -> int:
 
 
 if __name__ == "__main__":
-    reports = []
-    for l in sys.stdin:
-        reports.append(int(l))
+    reports = read_from_stdin_as_array(int)
     print(answer1(reports))
     print(answer2(reports))
