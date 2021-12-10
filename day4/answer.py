@@ -32,32 +32,28 @@ def answer1(chosen_numbers: list[int], boards: list[list[list[int]]], check_boar
 
 
 def answer2(chosen_numbers: list[int], boards: list[list[list[int]]], check_boards: list[list[list[bool]]]):
-    rest_boards = copy.deepcopy(boards)
-    rest_check_boards = copy.deepcopy(check_boards)
-    won_number = -999
-    last_board, last_check_board = [], []
+    last_board: list[list[int]] = []
+    last_check_board: list[list[bool]] = []
+    last_number = -1
     for chosen_number in chosen_numbers:
-        for i, board in enumerate(rest_boards):
+        board_index = 0
+        while board_index < len(boards):
+            board = boards[board_index]
             for j, row in enumerate(board):
                 if chosen_number in row:
-                    rest_check_boards[i][j][row.index(chosen_number)] = True
-                    next
-        copy_rest_boards = copy.deepcopy(rest_boards)
-        copy_rest_check_boards = copy.deepcopy(rest_check_boards)
-        rest_boards = []
-        rest_check_boards = []
-        for rb, rcb in zip(copy_rest_boards, copy_rest_check_boards):
-            if not is_bingo(rcb):
-                rest_boards.append(rb)
-                rest_check_boards.append(rcb)
+                    check_boards[board_index][j][row.index(chosen_number)] = True
+            if is_bingo(check_boards[board_index]):
+                last_board = boards.pop(board_index)
+                last_check_board = check_boards.pop(board_index)
             else:
-                won_number = chosen_number
-                last_board = rb
-                last_check_board = rcb
+                board_index += 1
+        if len(check_boards) == 0:
+            last_number = chosen_number
+            break
     score = 0
     for row, check_row in zip(last_board, last_check_board):
         score += sum([n for n, b in zip(row, check_row) if not b])
-    return score * won_number
+    return score * last_number
 
 
 if __name__ == "__main__":
