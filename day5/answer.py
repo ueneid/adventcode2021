@@ -12,7 +12,7 @@ class Point:
         self.y = y
 
     def __repr__(self) -> str:
-        return "x: {}, y: {}\n".format(self.x, self.y)
+        return "x: {}, y: {}".format(self.x, self.y)
 
     def __eq__(self, other):
         if not isinstance(other, Point):
