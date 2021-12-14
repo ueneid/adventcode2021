@@ -45,6 +45,13 @@ class Line:
         return "({}, {}) -> ({}, {})".format(self.p1.x, self.p1.y, self.p2.x, self.p2.y)
 
 
+def show_matrix(diagram: dict, n: int = 10) -> None:
+    matrix = [["."] * n for _ in range(n)]
+    for p, v in diagram.items():
+        matrix[p.y][p.x] = str(v)
+    for row in matrix:
+        print("".join(row))
+
 def answer1(vent_lines: list[Line]) -> int:
     diagram: dict[Point, int] = {}
     for line in vent_lines:
