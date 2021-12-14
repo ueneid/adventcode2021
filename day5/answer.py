@@ -34,11 +34,31 @@ class Line:
     def is_vertical(self) -> bool:
         return self.p1.x == self.p2.x
 
+    def get_min_and_max_xy(self) -> tuple[int, int, int, int]:
+        return min(self.p1.x, self.p2.x), max(self.p1.x, self.p2.x), min(self.p1.y, self.p2.y), max(self.p1.y, self.p2.y)
+
+    def in_rect(self, p: Point) -> bool:
+        minx, maxx, miny, maxy = self.get_min_and_max_xy()
+        return minx <= p.x <= maxx and miny <= p.y <= maxy
+
     def get_all_points(self) -> list[Point]:
         points: list[Point] = []
-        for x in range(min(self.p1.x, self.p2.x), max(self.p1.x, self.p2.x) + 1):
-            for y in range(min(self.p1.y, self.p2.y), max(self.p1.y, self.p2.y) + 1):
-                points.append(Point(x, y))
+        if self.is_horizontal() or self.is_vertical():
+            for x in range(min(self.p1.x, self.p2.x), max(self.p1.x, self.p2.x) + 1):
+                for y in range(min(self.p1.y, self.p2.y), max(self.p1.y, self.p2.y) + 1):
+                    points.append(Point(x, y))
+        else:
+            direction = (1, 1)
+            if self.p1.x < self.p2.x and self.p1.y > self.p2.y:
+                direction = (1, -1)
+            elif self.p1.x > self.p2.x and self.p1.y < self.p2.y:
+                direction = (-1, 1)
+            elif self.p1.x > self.p2.x and self.p1.y > self.p2.y:
+                direction = (-1, -1)
+            start_point = Point(self.p1.x, self.p1.y)
+            while self.in_rect(start_point):
+                points.append(start_point)
+                start_point = Point(start_point.x + direction[0], start_point.y + direction[1])
         return points
 
     def __repr__(self) -> str:
@@ -64,8 +84,16 @@ def answer1(vent_lines: list[Line]) -> int:
                 diagram[point] = 1
     return len([v for v in diagram.values() if v > 1])
 
-def answer2(lines):
-    pass
+
+def answer2(vent_lines: list[Line]) -> int:
+    diagram: dict[Point, int] = {}
+    for line in vent_lines:
+        for point in line.get_all_points():
+            if point in diagram:
+                diagram[point] += 1
+            else:
+                diagram[point] = 1
+    return len([v for v in diagram.values() if v > 1])
 
 
 if __name__ == "__main__":
