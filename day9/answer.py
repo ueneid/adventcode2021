@@ -31,7 +31,7 @@ def answer2(matrix: list[list[int]]) -> int:
     len_col = len(matrix)
     len_row = len(matrix[0])
 
-    def bfs(cur_x: int, cur_y: int, basins: list[int] = []) -> list[int]:
+    def dfs(cur_x: int, cur_y: int, basins: list[int] = []) -> list[int]:
         if not (0 <= cur_y < len_col and 0 <= cur_x < len_row):
             return basins
         cur_height = matrix[cur_y][cur_x]
@@ -40,13 +40,13 @@ def answer2(matrix: list[list[int]]) -> int:
         matrix[cur_y][cur_x] = -1
         basins.append(cur_height)
         for x, y in adjacent_points:
-            basins = bfs(cur_x + x, cur_y + y, basins)
+            basins = dfs(cur_x + x, cur_y + y, basins)
         return basins
 
     basins_list = []
     for i in range(len_col):
         for j in range(len_row):
-            basins = bfs(j, i, [])
+            basins = dfs(j, i, [])
             if basins:
                 basins_list.append(basins)
     ret = 1
